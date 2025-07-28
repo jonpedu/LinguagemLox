@@ -2,7 +2,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 class Interpreter implements Expr.Visitor<Object>,
         Stmt.Visitor<Void> {
     final Environment globals = new Environment();
@@ -22,7 +21,7 @@ class Interpreter implements Expr.Visitor<Object>,
             Lox.runtimeError(error);
         }
     }
-    
+
     @Override
     public Object visitLiteralExpr(Expr.Literal expr) {
         return expr.value;
@@ -61,15 +60,19 @@ class Interpreter implements Expr.Visitor<Object>,
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
-        if (operand instanceof Double) return;
+        if (operand instanceof Double)
+            return;
         throw new RuntimeError(operator, "Operand must be a number.");
     }
+
     private void checkNumberOperands(Token operator,
-                                     Object left, Object right) {
-        if (left instanceof Double && right instanceof Double) return;
+            Object left, Object right) {
+        if (left instanceof Double && right instanceof Double)
+            return;
 
         throw new RuntimeError(operator, "Operands must be numbers.");
     }
+
     private boolean isTruthy(Object object) {
         if (object == null)
             return false;
@@ -86,8 +89,10 @@ class Interpreter implements Expr.Visitor<Object>,
 
         return a.equals(b);
     }
+
     private String stringify(Object object) {
-        if (object == null) return "nil";
+        if (object == null)
+            return "nil";
 
         if (object instanceof Double) {
             String text = object.toString();
@@ -108,11 +113,13 @@ class Interpreter implements Expr.Visitor<Object>,
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
+
     private void execute(Stmt stmt) {
         stmt.accept(this);
     }
+
     void executeBlock(List<Stmt> statements,
-                      Environment environment) {
+            Environment environment) {
         Environment previous = this.environment;
         try {
             this.environment = environment;
@@ -139,22 +146,31 @@ class Interpreter implements Expr.Visitor<Object>,
             superclass = evaluate(stmt.superclass);
             if (!(superclass instanceof LoxClass)) {
                 throw new RuntimeError(stmt.superclass.name,
-                    "Superclass must be a class.");
+                        "Superclass must be a class.");
             }
         }
 
         environment.define(stmt.name.lexeme, null);
-        
+
+        if (stmt.superclass != null) {
+            environment = new Environment(environment);
+            environment.define("super", superclass);
+        }
+
         Map<String, LoxFunction> methods = new HashMap<>();
         for (Stmt.Function method : stmt.methods) {
             LoxFunction function = new LoxFunction(method, environment,
-                method.name.lexeme.equals("init"));
+                    method.name.lexeme.equals("init"));
             methods.put(method.name.lexeme, function);
         }
 
         LoxClass klass = new LoxClass(stmt.name.lexeme,
-            (LoxClass)superclass, methods);
-            
+                (LoxClass) superclass, methods);
+
+        if (superclass != null) {
+            environment = environment.enclosing;
+        }
+
         environment.assign(stmt.name, klass);
         return null;
     }
@@ -164,14 +180,14 @@ class Interpreter implements Expr.Visitor<Object>,
         evaluate(stmt.expression);
         return null;
     }
-    
+
     @Override
     public Void visitPrintStmt(Stmt.Print stmt) {
         Object value = evaluate(stmt.expression);
         System.out.println(stringify(value));
         return null;
     }
-    
+
     @Override
     public Void visitVarStmt(Stmt.Var stmt) {
         Object value = null;
@@ -204,7 +220,8 @@ class Interpreter implements Expr.Visitor<Object>,
     @Override
     public Void visitReturnStmt(Stmt.Return stmt) {
         Object value = null;
-        if (stmt.value != null) value = evaluate(stmt.value);
+        if (stmt.value != null)
+            value = evaluate(stmt.value);
 
         throw new Return(value);
     }
@@ -216,10 +233,11 @@ class Interpreter implements Expr.Visitor<Object>,
         }
         return null;
     }
+
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);
-        
+
         Integer distance = locals.get(expr);
         if (distance != null) {
             environment.assignAt(distance, expr.name, value);
@@ -228,14 +246,14 @@ class Interpreter implements Expr.Visitor<Object>,
         }
 
         environment.assign(expr.name, value);
-        
+
         return value;
     }
 
     @Override
     public Object visitCallExpr(Expr.Call expr) {
         Object callee = evaluate(expr.callee);
-        
+
         java.util.List<Object> arguments = new java.util.ArrayList<>();
         for (Expr argument : expr.arguments) {
             arguments.add(evaluate(argument));
@@ -243,14 +261,14 @@ class Interpreter implements Expr.Visitor<Object>,
 
         if (!(callee instanceof LoxCallable)) {
             throw new RuntimeError(expr.paren,
-             "Can only call functions and classes.");
+                    "Can only call functions and classes.");
         }
 
-        LoxCallable function = (LoxCallable)callee;
+        LoxCallable function = (LoxCallable) callee;
         if (arguments.size() != function.arity()) {
             throw new RuntimeError(expr.paren, "Expected " +
-                function.arity() + " arguments but got " +
-                arguments.size() + ".");
+                    function.arity() + " arguments but got " +
+                    arguments.size() + ".");
         }
 
         return function.call(this, arguments);
@@ -260,11 +278,11 @@ class Interpreter implements Expr.Visitor<Object>,
     public Object visitGetExpr(Expr.Get expr) {
         Object object = evaluate(expr.object);
         if (object instanceof LoxInstance) {
-        return ((LoxInstance) object).get(expr.name);
+            return ((LoxInstance) object).get(expr.name);
         }
 
         throw new RuntimeError(expr.name,
-            "Only instances have properties.");
+                "Only instances have properties.");
     }
 
     @Override
@@ -272,9 +290,11 @@ class Interpreter implements Expr.Visitor<Object>,
         Object left = evaluate(expr.left);
 
         if (expr.operator.type == TokenType.OR) {
-            if (isTruthy(left)) return left;
+            if (isTruthy(left))
+                return left;
         } else {
-            if (!isTruthy(left)) return left;
+            if (!isTruthy(left))
+                return left;
         }
 
         return evaluate(expr.right);
@@ -284,14 +304,34 @@ class Interpreter implements Expr.Visitor<Object>,
     public Object visitSetExpr(Expr.Set expr) {
         Object object = evaluate(expr.object);
 
-        if (!(object instanceof LoxInstance)) { 
-        throw new RuntimeError(expr.name,
-                                "Only instances have fields.");
+        if (!(object instanceof LoxInstance)) {
+            throw new RuntimeError(expr.name,
+                    "Only instances have fields.");
         }
 
         Object value = evaluate(expr.value);
-        ((LoxInstance)object).set(expr.name, value);
+        ((LoxInstance) object).set(expr.name, value);
         return value;
+    }
+
+    @Override
+    public Object visitSuperExpr(Expr.Super expr) {
+        int distance = locals.get(expr);
+        LoxClass superclass = (LoxClass)environment.getAt(
+            distance, "super");
+
+        LoxInstance object = (LoxInstance)environment.getAt(
+            distance - 1, "this");
+
+        LoxFunction method = superclass.findMethod(expr.method.lexeme);
+
+        if (method == null) {
+            throw new RuntimeError(expr.method,
+                "Undefined property '" + expr.method.lexeme + "'.");
+        }
+
+        return method.bind(object);
+
     }
 
     @Override
