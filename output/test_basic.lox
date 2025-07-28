@@ -1,0 +1,26 @@
+// Teste básico da linguagem Lox
+print "Olá, Mundo!";
+print "Teste básico funcionando.";
+
+// Teste de expressões aritméticas
+print 1 + 2;
+print 3 * 4;
+print 10 - 5;
+print 20 / 4;
+
+// Teste de expressões booleanas
+print true;
+print false;
+print !true;
+print !false;
+
+// Teste de comparações
+print 3 > 2;
+print 2 < 3;
+print 5 >= 5;
+print 4 <= 6;
+print 1 == 1;
+print 1 != 2;
+
+// Teste de strings
+print "Teste" + " de " + "concatenação";

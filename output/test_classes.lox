@@ -1,0 +1,33 @@
+// Teste de classes e objetos
+class Pessoa {
+  init(nome, idade) {
+    this.nome = nome;
+    this.idade = idade;
+  }
+
+  falar() {
+    print this.nome + " está falando.";
+  }
+
+  apresentar() {
+    print "Meu nome é " + this.nome;
+    print "Tenho anos de idade";
+  }
+}
+
+var pessoa1 = Pessoa("João", 30);
+var pessoa2 = Pessoa("Maria", 25);
+
+pessoa1.apresentar();
+pessoa2.apresentar();
+
+pessoa1.falar();
+pessoa2.falar();
+
+// Teste de propriedades de instância
+print "Nome da pessoa1: " + pessoa1.nome;
+print "Nome da pessoa2: " + pessoa2.nome;
+
+// Teste de modificação de propriedades
+pessoa1.nome = "João Silva";
+print "Novo nome da pessoa1: " + pessoa1.nome;

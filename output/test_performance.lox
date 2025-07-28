@@ -1,0 +1,90 @@
+// Teste de performance e recursão complexa
+print "=== TESTE DE PERFORMANCE ===";
+
+// Fibonacci otimizado com memoização usando closures
+fun criarFibonacci() {
+  var cache0 = 0;
+  var cache1 = 1;
+  var cache2 = 1;
+  var lastN = 2;
+  
+  fun fibonacci(n) {
+    if (n == 0) return cache0;
+    if (n == 1) return cache1;
+    if (n == 2) return cache2;
+    
+    // Calcular incrementalmente
+    var i = lastN + 1;
+    while (i <= n) {
+      var temp = cache1 + cache2;
+      cache0 = cache1;
+      cache1 = cache2;
+      cache2 = temp;
+      i = i + 1;
+    }
+    lastN = n;
+    return cache2;
+  }
+  
+  return fibonacci;
+}
+
+var fib = criarFibonacci();
+
+print "Testando Fibonacci otimizado:";
+var inicio = clock();
+print fib(10);
+print fib(15);
+print fib(20);
+var fim = clock();
+print "Tempo decorrido:";
+print fim - inicio;
+
+// Teste de função de alta ordem
+print "Testando funções de alta ordem:";
+
+fun aplicar(func, valor) {
+  return func(valor);
+}
+
+fun dobrar(x) {
+  return x * 2;
+}
+
+fun quadrado(x) {
+  return x * x;
+}
+
+print aplicar(dobrar, 5);
+print aplicar(quadrado, 7);
+
+// Teste de closures aninhadas
+print "Testando closures aninhadas:";
+
+fun criarCalculadora() {
+  var total = 0;
+  
+  fun somar(x) {
+    total = total + x;
+    return total;
+  }
+  
+  fun subtrair(x) {
+    total = total - x;
+    return total;
+  }
+  
+  fun obterTotal() {
+    return total;
+  }
+  
+  return somar; // Retorna apenas a função somar por simplicidade
+}
+
+var calc = criarCalculadora();
+print "Calculadora inicializada";
+print calc(10);
+print calc(5);
+print calc(3);
+
+print "=== TESTE DE PERFORMANCE CONCLUÍDO ===";

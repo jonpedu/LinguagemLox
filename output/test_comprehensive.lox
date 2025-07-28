@@ -1,0 +1,96 @@
+// Teste abrangente da linguagem Lox
+print "=== INICIANDO TESTE ABRANGENTE DA LINGUAGEM LOX ===";
+
+// 1. Teste de expressões básicas
+print "1. Expressões básicas:";
+print 2 + 3 * 4;
+print (2 + 3) * 4;
+print 10 / 2 - 1;
+
+// 2. Teste de strings
+print "2. Strings:";
+print "Hello" + " " + "World";
+var nome = "Lox";
+print "Linguagem: " + nome;
+
+// 3. Teste de booleanos
+print "3. Booleanos:";
+print true and false;
+print true or false;
+print !true;
+
+// 4. Teste de variáveis e escopo
+print "4. Variáveis e escopo:";
+var global = "global";
+{
+  var local = "local";
+  print global;
+  print local;
+}
+
+// 5. Teste de condicionais
+print "5. Condicionais:";
+var x = 10;
+if (x > 5) {
+  print "x é maior que 5";
+} else {
+  print "x não é maior que 5";
+}
+
+// 6. Teste de loops
+print "6. Loops:";
+var contador = 0;
+while (contador < 3) {
+  print contador;
+  contador = contador + 1;
+}
+
+// 7. Teste de funções
+print "7. Funções:";
+fun multiplicar(a, b) {
+  return a * b;
+}
+
+print multiplicar(3, 4);
+
+// 8. Teste de funções recursivas
+print "8. Recursão (Fibonacci):";
+fun fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+print fibonacci(6);
+
+// 9. Teste de closure
+print "9. Closures:";
+fun criarContador() {
+  var count = 0;
+  fun contador() {
+    count = count + 1;
+    return count;
+  }
+  return contador;
+}
+
+var meuContador = criarContador();
+print meuContador();
+print meuContador();
+print meuContador();
+
+// 10. Teste de classes
+print "10. Classes:";
+class Animal {
+  init(nome) {
+    this.nome = nome;
+  }
+  
+  falar() {
+    print this.nome + " faz algum som.";
+  }
+}
+
+var animal = Animal("Rex");
+animal.falar();
+
+print "=== TESTE ABRANGENTE CONCLUÍDO ===";

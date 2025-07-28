@@ -9,6 +9,22 @@ class Interpreter implements Expr.Visitor<Object>,
     private Environment environment = globals;
     private final Map<Expr, Integer> locals = new HashMap<>();
 
+    Interpreter() {
+        globals.define("clock", new LoxCallable() {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Object call(Interpreter interpreter,
+                             List<Object> arguments) {
+                return (double)System.currentTimeMillis() / 1000.0;
+            }
+
+            @Override
+            public String toString() { return "<native fn>"; }
+        });
+    }
+
     void resolve(Expr expr, int depth) {
         locals.put(expr, depth);
     }
@@ -214,8 +230,6 @@ class Interpreter implements Expr.Visitor<Object>,
         } else {
             globals.assign(expr.name, value);
         }
-
-        environment.assign(expr.name, value);
         
         return value;
     }

@@ -1,0 +1,121 @@
+// Programa avançado: Sistema de gerenciamento de biblioteca
+print "=== SISTEMA DE GERENCIAMENTO DE BIBLIOTECA ===";
+
+// Classe base para livros
+class Livro {
+  init(titulo, autor, ano) {
+    this.titulo = titulo;
+    this.autor = autor;
+    this.ano = ano;
+    this.emprestado = false;
+  }
+
+  emprestar() {
+    if (this.emprestado) {
+      print "Livro já emprestado: " + this.titulo;
+      return false;
+    } else {
+      this.emprestado = true;
+      print "Livro emprestado: " + this.titulo;
+      return true;
+    }
+  }
+
+  devolver() {
+    if (this.emprestado) {
+      this.emprestado = false;
+      print "Livro devolvido: " + this.titulo;
+      return true;
+    } else {
+      print "Livro não estava emprestado: " + this.titulo;
+      return false;
+    }
+  }
+
+  info() {
+    print "Título: " + this.titulo;
+    print "Autor: " + this.autor;
+    if (this.emprestado) {
+      print "Status: Emprestado";
+    } else {
+      print "Status: Disponível";
+    }
+  }
+}
+
+// Classe para gerenciar a biblioteca
+class Biblioteca {
+  init(nome) {
+    this.nome = nome;
+    this.totalLivros = 0;
+    this.livrosEmprestados = 0;
+  }
+
+  adicionarLivro(livro) {
+    this.totalLivros = this.totalLivros + 1;
+    print "Livro adicionado à biblioteca: " + livro.titulo;
+  }
+
+  emprestarLivro(livro) {
+    if (livro.emprestar()) {
+      this.livrosEmprestados = this.livrosEmprestados + 1;
+    }
+  }
+
+  devolverLivro(livro) {
+    if (livro.devolver()) {
+      this.livrosEmprestados = this.livrosEmprestados - 1;
+    }
+  }
+
+  relatorio() {
+    print "=== RELATÓRIO DA BIBLIOTECA " + this.nome + " ===";
+    print this.totalLivros;
+    print this.livrosEmprestados;
+    var disponiveis = this.totalLivros - this.livrosEmprestados;
+    print disponiveis;
+  }
+}
+
+// Função utilitária para criar relatório detalhado
+fun relatorioDetalhado(biblioteca, livros, quantidade) {
+  biblioteca.relatorio();
+  print "=== DETALHES DOS LIVROS ===";
+  
+  var i = 0;
+  while (i < quantidade) {
+    if (i == 0) {
+      livros.info();
+    }
+    i = i + 1;
+  }
+}
+
+// Testando o sistema
+print "Criando biblioteca...";
+var minhaLib = Biblioteca("Central");
+
+print "Criando livros...";
+var livro1 = Livro("1984", "George Orwell", 1949);
+var livro2 = Livro("Dom Casmurro", "Machado de Assis", 1899);
+var livro3 = Livro("O Cortiço", "Aluísio Azevedo", 1890);
+
+print "Adicionando livros à biblioteca...";
+minhaLib.adicionarLivro(livro1);
+minhaLib.adicionarLivro(livro2);
+minhaLib.adicionarLivro(livro3);
+
+print "Testando empréstimos...";
+minhaLib.emprestarLivro(livro1);
+minhaLib.emprestarLivro(livro2);
+
+print "Tentando emprestar livro já emprestado...";
+minhaLib.emprestarLivro(livro1);
+
+print "Devolvendo um livro...";
+minhaLib.devolverLivro(livro1);
+
+print "Gerando relatório...";
+relatorioDetalhado(minhaLib, livro1, 1);
+
+print "=== SISTEMA TESTADO COM SUCESSO ===";

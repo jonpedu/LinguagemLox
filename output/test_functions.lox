@@ -1,0 +1,36 @@
+// Teste de funções
+fun saudacao(nome) {
+  print "Olá, " + nome + "!";
+}
+
+saudacao("João");
+saudacao("Maria");
+
+// Teste de função com retorno
+fun soma(a, b) {
+  return a + b;
+}
+
+print soma(5, 3);
+print soma(10, 20);
+
+// Teste de função recursiva (fatorial)
+fun fatorial(n) {
+  if (n <= 1) {
+    return 1;
+  }
+  return n * fatorial(n - 1);
+}
+
+print "Fatorial de 5:";
+print fatorial(5);
+print "Fatorial de 6:";
+print fatorial(6);
+
+// Teste de função sem parâmetros
+fun obterTempo() {
+  return clock();
+}
+
+print "Tempo atual:";
+print obterTempo();

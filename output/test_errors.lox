@@ -1,0 +1,8 @@
+// Teste de erros
+print "Testando erros...";
+
+// Erro: variável não definida
+print variavel_inexistente;
+
+// Este código não deve ser executado
+print "Este print não deve aparecer";

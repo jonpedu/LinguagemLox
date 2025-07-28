@@ -1,0 +1,18 @@
+// Teste de loops while
+var i = 0;
+while (i < 5) {
+  print i;
+  i = i + 1;
+}
+
+print "Loop while terminou";
+
+// Teste de loop while com condição complexa
+var a = 1;
+var b = 1;
+while (a < 10 and b < 20) {
+  print a;
+  print b;
+  a = a + 1;
+  b = b + 2;
+}

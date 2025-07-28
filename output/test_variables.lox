@@ -1,0 +1,18 @@
+// Teste de variáveis
+var a = 10;
+var b = 20;
+print a;
+print b;
+print a + b;
+
+// Teste de reatribuição
+a = 30;
+print a;
+
+// Teste de variáveis não inicializadas
+var c;
+print c; // deve imprimir nil
+
+// Teste de escopo global
+var global = "variável global";
+print global;

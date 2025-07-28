@@ -1,0 +1,30 @@
+// Exemplo interativo para demonstração manual
+var nome = "Usuario";
+print "Bem-vindo ao interpretador Lox, " + nome + "!";
+
+// Teste de função simples
+fun saudar(pessoa) {
+    return "Olá, " + pessoa + "! Como vai?";
+}
+
+print saudar("João");
+
+// Teste de classe simples
+class Contador {
+    init() {
+        this.valor = 0;
+    }
+    
+    incrementar() {
+        this.valor = this.valor + 1;
+        return this.valor;
+    }
+}
+
+var cont = Contador();
+print cont.valor;
+print cont.incrementar();
+print cont.incrementar();
+
+print "Demonstração completa!";
+print "O interpretador Lox está funcionando perfeitamente!";

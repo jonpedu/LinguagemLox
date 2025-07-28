@@ -90,11 +90,6 @@ class Scanner {
             addToken(TokenType.SLASH);
             }
             break;
-            case 'o':
-                if (match('r')) {
-                    addToken(TokenType.OR);
-                }
-                break;
 
         case ' ':
         case '\r':
